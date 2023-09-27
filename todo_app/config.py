@@ -67,4 +67,4 @@ class BaseConfig(ConfigDefaultTypesMixin):
 
 class DevelopmentConfig(BaseConfig):
     DEBUG: bool = True
-    LOG_LEVEL = logging.DEBUG
+    # LOG_LEVEL = logging.DEBUG

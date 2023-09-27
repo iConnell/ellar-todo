@@ -14,11 +14,13 @@ class ASampleDTO(DataclassSerializer):
     age: t.Optional[int] = None
 """
 from ellar.common import Serializer
+from datetime import datetime
 
 
 class TodoSerializer(Serializer):
     title: str
     description: str
+    completed: bool = False
 
 
 class RetrieveTodoSerializer(TodoSerializer):

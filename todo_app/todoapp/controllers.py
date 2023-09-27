@@ -12,7 +12,7 @@ from ellar.common import Controller, ControllerBase, get, post
 from ellar.common.exceptions import NotFound
 from .schemas import TodoSerializer, RetrieveTodoSerializer
 from .services import DummyTodoDB
-from ellar.common import Body
+import typing as t
 
 
 @Controller
@@ -20,12 +20,12 @@ class TodoappController(ControllerBase):
     def __init__(self, db: DummyTodoDB):
         self.todo_db = db
 
-    @get("/")
-    def index(self):
-        return {"detail": "Welcome Todoapp Resource"}
+    @get("/", response={200: t.List[RetrieveTodoSerializer]})
+    def list_todo(self):
+        todos = self.todo_db._data
+        return todos
 
-    @post("/create", response={200: str})
+    @post("/create", response={200: RetrieveTodoSerializer})
     async def create_todo(self, payload: TodoSerializer):
-        print("In the beninging")
-        pk = await self.todo_db.add_todo(payload.dict())
-        return pk
+        todo = self.todo_db.add_todo(payload.dict())
+        return todo
