@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "todo"
+version = "0.1.0"
+description = ""
+authors = ["McConnell <ik.ugwuanyi@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+ellar-cli = "^0.2.2"
+ellar = "0.4.8"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[ellar]
+default = "todo_app"
+[ellar.projects.todo_app]
+project-name = "todo_app"
+application = "todo_app.server:application"
+config = "todo_app.config:DevelopmentConfig"
+root-module = "todo_app.root_module:ApplicationModule"
