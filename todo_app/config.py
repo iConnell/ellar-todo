@@ -7,13 +7,16 @@ export ELLAR_CONFIG_MODULE=todo_app.config:DevelopmentConfig
 """
 
 import typing as t
-import logging
+import os
+from pathlib import Path
 
 from pydantic.json import ENCODERS_BY_TYPE as encoders_by_type
 from starlette.middleware import Middleware
 from ellar.common import IExceptionHandler, JSONResponse
 from ellar.core import ConfigDefaultTypesMixin
 from ellar.core.versioning import BaseAPIVersioning, DefaultAPIVersioning
+
+BASE_DIR = Path(__file__).parent.parent
 
 
 class BaseConfig(ConfigDefaultTypesMixin):
@@ -63,6 +66,15 @@ class BaseConfig(ConfigDefaultTypesMixin):
 
     # Object Serializer custom encoders
     SERIALIZER_CUSTOM_ENCODER: t.Dict[t.Any, t.Callable[[t.Any], t.Any]] = encoders_by_type
+
+    _db_url = "sqlite:///./tododb.db"
+
+    SQLALCHEMY_CONFIG = {
+        "db_url": _db_url,
+        "pool_pre_ping": True,
+        "echo": False,
+        "migration_directory": os.path.join(BASE_DIR, "db", "migrations"),
+    }
 
 
 class DevelopmentConfig(BaseConfig):

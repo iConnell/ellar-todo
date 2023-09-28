@@ -41,3 +41,14 @@ class DummyTodoDB:
 
     def list_todos(self) -> t.List[DummyDBItem]:
         return self._data
+
+    def get_todo(self, todo_id):
+        return self._data[self._data.index(todo_id)]
+
+    def update_todo(self, todo_id, update_data):
+        todo = self._data[self._data.index(todo_id)]
+        todo.update(update_data)
+        return todo
+
+    def delete_todo(self, todo_id):
+        return self._data.pop(self._data.index(todo_id))
