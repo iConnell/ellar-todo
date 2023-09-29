@@ -12,6 +12,7 @@ class BProvider
 from ellar.di import injectable, singleton_scope
 import typing as t
 import uuid
+from ..db.models import Todo
 
 
 class DummyDBItem:
