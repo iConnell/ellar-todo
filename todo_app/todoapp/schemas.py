@@ -24,4 +24,4 @@ class TodoSerializer(Serializer):
 
 
 class RetrieveTodoSerializer(TodoSerializer):
-    pk: str
+    id: int

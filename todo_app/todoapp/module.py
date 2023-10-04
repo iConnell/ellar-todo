@@ -22,12 +22,12 @@ from ellar.core import ModuleBase
 from ellar.di import Container
 
 from .controllers import TodoappController
-from .services import DummyTodoDB
+from .services import TodoService
 
 
 @Module(
     controllers=[TodoappController],
-    providers=[DummyTodoDB],
+    providers=[TodoService],
     routers=[],
 )
 class TodoappModule(ModuleBase):
