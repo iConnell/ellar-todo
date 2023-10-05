@@ -10,6 +10,7 @@ python = "^3.10"
 ellar-cli = "^0.2.2"
 ellar = "0.4.8"
 sqlalchemy = "^2.0.21"
+alembic = "^1.12.0"
 
 
 [build-system]

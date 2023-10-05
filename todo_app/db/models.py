@@ -7,6 +7,7 @@ class Todo(Base):
     __tablename__ = "todos"
 
     id = Column(Integer, primary_key=True, index=True)
+    owner = Column(String)
     title = Column(String)
     description = Column(String)
     completed = Column(Boolean, default=False)

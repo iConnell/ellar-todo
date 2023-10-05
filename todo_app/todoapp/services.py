@@ -29,7 +29,6 @@ class TodoService:
 
     def list_todos(self):
         todos = self.db.query(Todo).all()
-        print(todos)
         return todos
 
     def get_todo(self, todo_id):
