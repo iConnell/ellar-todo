@@ -15,20 +15,13 @@ from .services import TodoService
 import typing as t
 
 
-from ..db.database import engine, SessionLocal
-from ..db.models import Base
-from sqlalchemy.orm import Session
-
-Base.metadata.create_all(bind=engine)
-
-
 @Controller
-class TodoappController(ControllerBase):
+class TodoController(ControllerBase):
     def __init__(self, todo_service: TodoService) -> None:
         self.todo_service = todo_service
 
-    @post("/create", response={201: RetrieveTodoSerializer})
-    async def create_todo(self, todo_data: TodoSerializer):
+    @post("/", response={201: RetrieveTodoSerializer})
+    def create_todo(self, todo_data: TodoSerializer):
         todo = self.todo_service.add_todo(todo_data)
         return todo
 
@@ -36,23 +29,23 @@ class TodoappController(ControllerBase):
     def list_todo(self):
         return self.todo_service.list_todos()
 
-    @get("/{todo_id:str}", response={200: RetrieveTodoSerializer})
-    async def get_todo(self, todo_id: int):
+    @get("/{todo_id:int}", response={200: RetrieveTodoSerializer})
+    def get_todo(self, todo_id: int):
         todo = self.todo_service.get_todo(todo_id)
         if not todo:
             raise NotFound(f"Todo with id {todo_id} not found")
-
+        print(todo)
         return todo
 
-    @patch("/{todo_id:str}", response={200: RetrieveTodoSerializer})
-    async def update_todo(self, todo_id: str, payload: dict):
+    @patch("/{todo_id:int}", response={200: RetrieveTodoSerializer})
+    def update_todo(self, todo_id: int, payload: dict):
         todo = self.todo_service.update_todo(todo_id, payload)
         if not todo:
             raise NotFound(f"Todo with id {todo_id} not found")
         return todo
 
-    @delete("/{todo_id:str}", response={204: dict})
-    async def delete_todo(self, todo_id: str):
+    @delete("/{todo_id:int}", response={204: dict})
+    def delete_todo(self, todo_id: int):
         todo = self.todo_service.delete_todo(todo_id)
         if not todo:
             raise NotFound(f"Todo with id {todo_id} not found")

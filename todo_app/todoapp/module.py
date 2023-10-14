@@ -21,12 +21,12 @@ from ellar.common import Module
 from ellar.core import ModuleBase
 from ellar.di import Container
 
-from .controllers import TodoappController
+from .controllers import TodoController
 from .services import TodoService
 
 
 @Module(
-    controllers=[TodoappController],
+    controllers=[TodoController],
     providers=[TodoService],
     routers=[],
 )

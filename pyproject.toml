@@ -11,6 +11,8 @@ ellar-cli = "^0.2.2"
 ellar = "0.4.8"
 sqlalchemy = "^2.0.21"
 alembic = "^1.12.0"
+pytest = "^7.4.2"
+trio = "^0.22.2"
 
 
 [build-system]

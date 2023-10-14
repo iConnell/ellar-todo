@@ -12,13 +12,15 @@ class BProvider
 from ellar.di import injectable, singleton_scope, request_scope
 import typing as t
 from ..db.models import Todo
-from ..db.database import SessionLocal
+from ..db.database import get_session_maker
+from ellar.core import Config
 
 
 @injectable(scope=singleton_scope)
 class TodoService:
-    def __init__(self) -> None:
-        self.db = SessionLocal()
+    def __init__(self, config: Config) -> None:
+        session_maker = get_session_maker(config)
+        self.db = session_maker()
 
     def add_todo(self, todo_data):
         new_todo = Todo(title=todo_data.title, description=todo_data.description)
