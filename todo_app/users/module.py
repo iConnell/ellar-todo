@@ -22,11 +22,12 @@ from ellar.core import ModuleBase
 from ellar.di import Container
 
 from .controllers import UsersController
+from .services import UserService
 
 
 @Module(
     controllers=[UsersController],
-    providers=[],
+    providers=[UserService],
     routers=[],
 )
 class UsersModule(ModuleBase):
@@ -35,4 +36,4 @@ class UsersModule(ModuleBase):
     """
 
     def register_providers(self, container: Container) -> None:
-        """for more complicated provider registrations, use container.register_instance(...) """
+        """for more complicated provider registrations, use container.register_instance(...)"""

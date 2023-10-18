@@ -23,4 +23,4 @@ class UserSerializer(Serializer):
 
 
 class RetrieveUserSerilizer(UserSerializer):
-    pk: str
+    id: str
