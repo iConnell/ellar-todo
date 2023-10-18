@@ -34,3 +34,6 @@ class UserService:
 
     def list_users(self):
         return self.db.query(User).all()
+
+    def get_user(self, user_id):
+        return self.db.query(User).filter(User.id == user_id).first()

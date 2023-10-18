@@ -27,3 +27,7 @@ class UsersController(ControllerBase):
     @get("/", response={200: t.List[RetrieveUserSerilizer]})
     def list_users(self):
         return self.user_service.list_users()
+
+    @get("/{user_id:int}", response={200: RetrieveUserSerilizer})
+    def get_user(self, user_id: int):
+        return self.user_service.get_user(user_id)
