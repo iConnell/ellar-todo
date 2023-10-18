@@ -8,7 +8,7 @@ class MyController(ControllerBase):
     def index(self):
         return {'detail': "Welcome Dog's Resources"}
 """
-from ellar.common import Controller, ControllerBase, get, post, patch, delete, Provide
+from ellar.common import Controller, ControllerBase, get, post, patch, delete
 from ellar.common.exceptions import NotFound
 from .schemas import TodoSerializer, RetrieveTodoSerializer
 from .services import TodoService
@@ -26,27 +26,26 @@ class TodoController(ControllerBase):
         return todo
 
     @get("/", response={200: t.List[RetrieveTodoSerializer]})
-    def list_todo(self):
-        return self.todo_service.list_todos()
+    def list_todo(self, user: int = None, completed: bool = False):
+        return self.todo_service.list_todos(user, completed)
 
     @get("/{todo_id:int}", response={200: RetrieveTodoSerializer})
     def get_todo(self, todo_id: int):
         todo = self.todo_service.get_todo(todo_id)
         if not todo:
             raise NotFound(f"Todo with id {todo_id} not found")
-        print(todo)
         return todo
 
     @patch("/{todo_id:int}", response={200: RetrieveTodoSerializer})
-    def update_todo(self, todo_id: int, payload: dict):
-        todo = self.todo_service.update_todo(todo_id, payload)
+    def update_todo(self, todo_id: int, payload: dict, user: int):
+        todo = self.todo_service.update_todo(todo_id, payload, user)
         if not todo:
             raise NotFound(f"Todo with id {todo_id} not found")
         return todo
 
     @delete("/{todo_id:int}", response={204: dict})
-    def delete_todo(self, todo_id: int):
-        todo = self.todo_service.delete_todo(todo_id)
+    def delete_todo(self, todo_id: int, user: int):
+        todo = self.todo_service.delete_todo(todo_id, user)
         if not todo:
             raise NotFound(f"Todo with id {todo_id} not found")
         return 204, {}

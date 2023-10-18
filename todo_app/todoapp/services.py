@@ -23,29 +23,31 @@ class TodoService:
         self.db = session_maker()
 
     def add_todo(self, todo_data):
-        new_todo = Todo(title=todo_data.title, description=todo_data.description)
+        new_todo = Todo(**dict(todo_data))
         self.db.add(new_todo)
         self.db.commit()
         self.db.refresh(new_todo)
         return new_todo
 
-    def list_todos(self):
-        todos = self.db.query(Todo).all()
-        return todos
+    def list_todos(self, user, completed):
+        if not user:
+            return self.db.query(Todo).filter(Todo.completed == completed).all()
+        print(completed)
+        return self.db.query(Todo).filter(Todo.owner == user, Todo.completed == completed).all()
 
     def get_todo(self, todo_id):
         return self.db.query(Todo).filter(Todo.id == todo_id).first()
 
-    def update_todo(self, todo_id, update_data):
-        todo = self.db.query(Todo).filter(Todo.id == todo_id)
+    def update_todo(self, todo_id, update_data, user):
+        todo = self.db.query(Todo).filter(Todo.id == todo_id, Todo.owner == user)
 
         todo.update(update_data)
         self.db.commit()
 
         return todo.first()
 
-    def delete_todo(self, todo_id):
-        delete_count = self.db.query(Todo).filter(Todo.id == todo_id).delete()
+    def delete_todo(self, todo_id, user):
+        delete_count = self.db.query(Todo).filter(Todo.id == todo_id, Todo.owner == user).delete()
         self.db.commit()
 
         return delete_count

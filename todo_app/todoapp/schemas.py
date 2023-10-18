@@ -20,6 +20,7 @@ class TodoSerializer(Serializer):
     title: str
     description: str
     completed: bool = False
+    owner: int
 
 
 class RetrieveTodoSerializer(TodoSerializer):
