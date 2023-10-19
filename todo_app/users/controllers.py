@@ -19,7 +19,7 @@ class UsersController(ControllerBase):
     def __init__(self, user_service: UserService) -> None:
         self.user_service = user_service
 
-    @post("/", response={201: UserSerializer})
+    @post("/", response={201: RetrieveUserSerilizer})
     def user_signup(self, user_details: UserSerializer):
         user = self.user_service.user_signup(user_details)
         return user

@@ -14,6 +14,7 @@ class ASampleDTO(DataclassSerializer):
     age: t.Optional[int] = None
 """
 from ellar.common import DataclassSerializer, Serializer
+from datetime import date as date_type
 
 
 class UserSerializer(Serializer):
@@ -24,3 +25,4 @@ class UserSerializer(Serializer):
 
 class RetrieveUserSerilizer(UserSerializer):
     id: str
+    created_at: date_type
