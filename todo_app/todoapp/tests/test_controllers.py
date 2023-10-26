@@ -17,8 +17,8 @@ class TestTodoController:
         self.controller = self.test_module.get(TodoController)
         self.todo_data = {"title": "Test Todo", "description": "A simple create todo test"}
 
-    def test_create_todo(self, db, test_user):
-        todo_data = {"title": "Test Todo", "description": "A simple create todo test", "owner": test_user.id}
+    def test_create_todo(self, db, create_user):
+        todo_data = {"title": "Test Todo", "description": "A simple create todo test", "owner": create_user.id}
 
         result = self.controller.create_todo(TodoSerializer(**todo_data))
 
@@ -40,17 +40,17 @@ class TestTodoController:
         assert result.description == self.todo_data["description"]
         assert result.completed == False
 
-    def test_update_todo(self, db, test_user):
+    def test_update_todo(self, db, create_user):
         update_data = {"title": "New Title", "description": "Different Description"}
-        result = self.controller.update_todo(1, update_data, test_user.id)
+        result = self.controller.update_todo(1, update_data, create_user.id)
 
         assert result.id == 1
         assert result.title == update_data["title"]
         assert result.description == update_data["description"]
         assert result.completed == False
 
-    def test_delete_todo(self, db, test_user):
-        status_code, result = self.controller.delete_todo(1, test_user.id)
+    def test_delete_todo(self, db, create_user):
+        status_code, result = self.controller.delete_todo(1, create_user.id)
 
         assert status_code == 204
 
@@ -64,8 +64,8 @@ class TestTodoControllerE2E:
 
         self.todo_data = {"title": "Test Todo", "description": "A simple todo"}
 
-    def test_create_todo(self, db, test_user):
-        self.todo_data.update({"owner": test_user.id})
+    def test_create_todo(self, db, create_user):
+        self.todo_data.update({"owner": create_user.id})
         res = self.client.post("/todo/", data=json.dumps(self.todo_data))
         assert res.status_code == 201
         res_data = res.json()
@@ -76,7 +76,7 @@ class TestTodoControllerE2E:
         assert res_data["description"] == self.todo_data["description"]
         assert res_data["completed"] == False
 
-    def test_list_todo(self, test_user):
+    def test_list_todo(self, create_user):
         res = self.client.get("/todo/")
 
         res_data = res.json()
@@ -86,19 +86,19 @@ class TestTodoControllerE2E:
         assert len(res_data) == 1
 
         assert res_data[0]["id"]
-        assert res_data[0]["owner"] == test_user.id
+        assert res_data[0]["owner"] == create_user.id
         assert res_data[0]["title"] == self.todo_data["title"]
         assert res_data[0]["description"] == self.todo_data["description"]
         assert res_data[0]["completed"] == False
 
-    def test_get_todo(self, test_user):
+    def test_get_todo(self, create_user):
         res = self.client.get("/todo/1")
 
         res_data = res.json()
 
         assert res.status_code == 200
         assert res_data["id"]
-        assert res_data["owner"] == test_user.id
+        assert res_data["owner"] == create_user.id
         assert res_data["title"] == self.todo_data["title"]
         assert res_data["description"] == self.todo_data["description"]
         assert res_data["completed"] == False

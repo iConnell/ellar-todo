@@ -3,10 +3,10 @@ from todo_app.db.database import get_session_maker
 
 
 class TestTodoModels:
-    def test_todo_has_default_values(self, db, test_user):
+    def test_todo_has_default_values(self, db, create_user):
         session = get_session_maker(db)()
 
-        new_todo = Todo(title="Test Todo", description="A simple todo test", owner=test_user.id)
+        new_todo = Todo(title="Test Todo", description="A simple todo test", owner=create_user.id)
         session.add(new_todo)
         session.commit()
         session.refresh(new_todo)

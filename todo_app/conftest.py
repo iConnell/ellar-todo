@@ -6,8 +6,6 @@ from ellar.core import App
 from ellar.testing import Test
 from ellar.testing.module import TestingModule
 from httpx import AsyncClient
-from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncEngine
 from .db.models import User
 
 # from fullview_trader.db.cli.handlers import upgrade
@@ -43,42 +41,23 @@ def event_loop():
 
 
 @pytest.fixture(scope="session")
-def _db_engine(app):
+def _db_engine(app: App):
     engine = get_engine(app.config)
     Base.metadata.create_all(bind=engine)
 
-    with engine.connect() as conn:
-        conn.execute(text("DROP TABLE IF EXISTS alembic_version"))
-        conn.commit()
+    yield
 
-    try:
-        pass
-    finally:
-        try:
-            yield
-        except Exception:
-            pass
-
-        with engine.connect() as conn:
-            conn.execute(text("DROP TABLE IF EXISTS alembic_version"))
-            conn.commit()
-
-        with engine.begin() as conn:
-            conn.execute(text("DROP TABLE IF EXISTS users"))
-            conn.execute(text("DROP TABLE IF EXISTS todos"))
-            conn.commit()
-
-        engine.dispose()
+    Base.metadata.drop_all(bind=engine)
 
 
 @pytest.fixture(scope="session")
-def db(app, _db_engine):
+def db(app: App, _db_engine):
     """yields a SQLAlchemy connection which is rollback after the test"""
     yield app.config
 
 
 @pytest.fixture()
-def test_user(app):
+def create_user(app: App):
     session = get_session_maker(app.config)()
     user_data = {"first_name": "First Name", "last_name": "Last Name", "username": "test_username"}
 

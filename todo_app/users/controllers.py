@@ -12,6 +12,7 @@ from ellar.common import Controller, ControllerBase, get, post
 import typing as t
 from .schemas import UserSerializer, RetrieveUserSerilizer
 from .services import UserService
+from ..db.models import User
 
 
 @Controller
@@ -20,14 +21,14 @@ class UsersController(ControllerBase):
         self.user_service = user_service
 
     @post("/", response={201: RetrieveUserSerilizer})
-    def user_signup(self, user_details: UserSerializer):
+    def user_signup(self, user_details: UserSerializer) -> RetrieveUserSerilizer:
         user = self.user_service.user_signup(user_details)
         return user
 
     @get("/", response={200: t.List[RetrieveUserSerilizer]})
-    def list_users(self):
+    def list_users(self) -> t.List[RetrieveUserSerilizer]:
         return self.user_service.list_users()
 
     @get("/{user_id:int}", response={200: RetrieveUserSerilizer})
-    def get_user(self, user_id: int):
+    def get_user(self, user_id: int) -> RetrieveUserSerilizer:
         return self.user_service.get_user(user_id)
